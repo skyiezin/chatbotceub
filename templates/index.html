@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Hosting</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      margin: 0;
+    }
+    #chatbox {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 320px;
+      height: 400px;
+      background: #222;
+      border-radius: 8px;
+      overflow-y: auto;
+      padding: 10px;
+      display: none;
+      flex-direction: column;
+    }
+    #chatinput {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      display: none;
+      gap: 5px;
+    }
+    input, button {
+      padding: 10px;
+    }
+    #chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background: #007BFF;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+    }
+  </style>
+</head>
+<body>
+  <button id="chat-button" onclick="abrirChat()">💬</button>
+
+  <div id="chatbox">
+    <div id="mensagens"></div>
+  </div>
+
+  <div id="chatinput">
+    <input type="text" id="msg" placeholder="Digite sua dúvida" onkeypress="if(event.key==='Enter'){enviar()}">
+    <button onclick="enviar()">Enviar</button>
+  </div>
+
+  <script>
+    function abrirChat() {
+      document.getElementById('chatbox').style.display = 'flex';
+      document.getElementById('chatinput').style.display = 'flex';
+      document.getElementById('chat-button').style.display = 'none';
+      setTimeout(() => document.getElementById('msg').focus(), 100);
+    }
+
+    async function enviar() {
+      const msg = document.getElementById('msg').value.trim();
+      if (!msg) return;
+      const mensagens = document.getElementById('mensagens');
+      mensagens.innerHTML += "<div><b>Você:</b> " + msg + "</div>";
+      document.getElementById('msg').value = "";
+
+      const response = await fetch("/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: msg })
+      });
+
+      const data = await response.json();
+      mensagens.innerHTML += "<div><b>Bot:</b> " + data.reply + "</div>";
+      mensagens.scrollTop = mensagens.scrollHeight;
+    }
+  </script>
+</body>
+</html>
