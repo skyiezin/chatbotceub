@@ -20,10 +20,25 @@
       height: 400px;
       background: rgba(0, 0, 0, 0.7);
       border-radius: 8px;
-      overflow-y: auto;
-      padding: 10px;
+      overflow-y: hidden;
       display: none;
       flex-direction: column;
+    }
+
+    .chat-header {
+      background-color: #007BFF;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+      text-align: center;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    #mensagens {
+      padding: 10px;
+      overflow-y: auto;
+      flex: 1;
     }
 
     .mensagem-usuario {
@@ -93,6 +108,7 @@
   <button id="chat-button" onclick="abrirChat()">💬</button>
 
   <div id="chatbox">
+    <div class="chat-header">Atendente Virtual</div>
     <div id="mensagens"></div>
   </div>
 
